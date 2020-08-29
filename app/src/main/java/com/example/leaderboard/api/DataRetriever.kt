@@ -1,10 +1,9 @@
-package com.example.weatherapp.api
-
+package com.example.leaderboard.api
 // Other imported classes
 
 
-import com.example.weatherapp.data.Request
-import com.example.weatherapp.data.Response
+import com.example.leaderboard.data.Skill_IQ_Leaders
+import com.example.leaderboard.data.learning_leaders
 import okhttp3.CipherSuite
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
@@ -15,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class DataRetriever {
-    private val service: WeatherService
+    private lateinit var service: DataService
 
     companion object {
         //1
@@ -32,7 +31,7 @@ class DataRetriever {
             .client(getClient())
             .build()
         //4
-        service = retrofit.create(WeatherService::class.java)
+        service = retrofit.create(DataService::class.java)
     }
 
     fun getClient(): OkHttpClient {
@@ -59,8 +58,12 @@ class DataRetriever {
 
     }
 
-    suspend fun getData(city: String): Response {
-        return service.searchData(city, Request.api)
+    suspend fun getLearningData(): learning_leaders {
+        return service.searchLearningData()
+    }
+
+    suspend fun getIQData(): Skill_IQ_Leaders {
+        return service.searchIQData()
     }
 
 }
