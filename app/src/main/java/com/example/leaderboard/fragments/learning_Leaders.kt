@@ -62,7 +62,7 @@ class learning_Leaders : Fragment() {
         }
     }
 
-    fun retrieveData() {
+    private fun retrieveData() {
         //1 Create a Coroutine scope using a job to be able to cancel when needed
         val mainActivityJob = Job()
 
@@ -74,7 +74,7 @@ class learning_Leaders : Fragment() {
                 .setIcon(android.R.drawable.ic_dialog_alert).show()
         }
 
-        //3 the Coroutine runs using the Main (UI) dispatcher
+
         val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
         coroutineScope.launch(errorHandler) {
             //4
@@ -83,7 +83,7 @@ class learning_Leaders : Fragment() {
         }
     }
 
-    fun isNetworkConnected(): Boolean {
+    private fun isNetworkConnected(): Boolean {
         val connectivityManager =
             activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork

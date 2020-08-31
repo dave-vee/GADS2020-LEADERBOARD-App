@@ -48,13 +48,14 @@ class SkillIQ_leaders : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_skilliq, container, false)
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         rv_IQ.layoutManager = LinearLayoutManager(requireContext())
-
         if (isNetworkConnected()) {
             retrieveData()
         } else {
@@ -63,6 +64,7 @@ class SkillIQ_leaders : Fragment() {
                 .setPositiveButton(android.R.string.ok) { _, _ -> }
                 .setIcon(android.R.drawable.ic_dialog_alert).show()
         }
+
     }
 
 
