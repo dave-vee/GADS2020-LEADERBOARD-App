@@ -24,7 +24,8 @@ class LeaderListAdapter(private val leadersList: learning_leaders) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_skilliq, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.fragment_skilliq, parent, false)
         return ViewHolder(view)
     }
 

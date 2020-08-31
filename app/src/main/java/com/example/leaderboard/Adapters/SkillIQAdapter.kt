@@ -9,8 +9,8 @@ import com.example.leaderboard.data.Skill_IQ_Leaders
 import kotlinx.android.synthetic.main.recyclerview_skilliq.view.*
 
 
-class DataListAdapter(private val IQList: Skill_IQ_Leaders) :
-    RecyclerView.Adapter<DataListAdapter.ViewHolder>() {
+class SkillIQAdapter(private val IQList: Skill_IQ_Leaders) :
+    RecyclerView.Adapter<SkillIQAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -24,7 +24,8 @@ class DataListAdapter(private val IQList: Skill_IQ_Leaders) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_skilliq, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.fragment_skilliq, parent, false)
         return ViewHolder(view)
     }
 
@@ -49,7 +50,7 @@ class DataListAdapter(private val IQList: Skill_IQ_Leaders) :
 //        }
 //    }
 //    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val view = LayoutInflater.from().inflate(R.layout.item_skilliq, parent, false)
+//        val view = LayoutInflater.from().inflate(R.layout.fragment_skilliq, parent, false)
 //        return ViewHolder(view)
 //    }
 //    override fun onBindViewHolder(holder: ViewHolder, position: Int) {

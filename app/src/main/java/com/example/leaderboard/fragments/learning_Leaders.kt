@@ -1,11 +1,20 @@
 package com.example.leaderboard.fragments
 
+import android.app.AlertDialog
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.leaderboard.Adapters.LeaderListAdapter
 import com.example.leaderboard.R
+import com.example.leaderboard.api.DataRetriever
+import kotlinx.android.synthetic.main.fragment_learning__leaders.*
+import kotlinx.coroutines.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +45,51 @@ class learning_Leaders : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_learning__leaders, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rv_learning_leaders.layoutManager = LinearLayoutManager(requireContext())
+
+        if (isNetworkConnected()) {
+            retrieveData()
+        } else {
+            AlertDialog.Builder(requireContext()).setTitle("No Internet Connection")
+                .setMessage("Please check your internet connection and try again")
+                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
+        }
+    }
+
+    fun retrieveData() {
+        //1 Create a Coroutine scope using a job to be able to cancel when needed
+        val mainActivityJob = Job()
+
+        //2 Handle exceptions if any
+        val errorHandler = CoroutineExceptionHandler { _, exception ->
+            AlertDialog.Builder(requireContext()).setTitle("Error")
+                .setMessage(exception.message)
+                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
+        }
+
+        //3 the Coroutine runs using the Main (UI) dispatcher
+        val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
+        coroutineScope.launch(errorHandler) {
+            //4
+            val resultList = DataRetriever().getLearningData()
+            rv_learning_leaders.adapter = LeaderListAdapter(resultList)
+        }
+    }
+
+    fun isNetworkConnected(): Boolean {
+        val connectivityManager =
+            activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+        return networkCapabilities != null &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
     companion object {

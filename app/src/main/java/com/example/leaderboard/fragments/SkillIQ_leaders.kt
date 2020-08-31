@@ -1,11 +1,20 @@
 package com.example.leaderboard.fragments
 
+import android.app.AlertDialog
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.leaderboard.Adapters.SkillIQAdapter
 import com.example.leaderboard.R
+import com.example.leaderboard.api.DataRetriever
+import kotlinx.android.synthetic.main.fragment_skilliq.*
+import kotlinx.coroutines.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,8 +28,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class SkillIQ_leaders : Fragment() {
 
-//    private lateinit var linearLayoutManager: LinearLayoutManager
-//    private lateinit var recyclerView :RecyclerView
+
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -39,8 +47,55 @@ class SkillIQ_leaders : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.item_skilliq, container, false)
+        return inflater.inflate(R.layout.fragment_skilliq, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rv_IQ.layoutManager = LinearLayoutManager(requireContext())
+
+        if (isNetworkConnected()) {
+            retrieveData()
+        } else {
+            AlertDialog.Builder(requireContext()).setTitle("No Internet Connection")
+                .setMessage("Please check your internet connection and try again")
+                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
+        }
+    }
+
+
+    fun retrieveData() {
+        //1 Create a Coroutine scope using a job to be able to cancel when needed
+        val mainActivityJob = Job()
+
+        //2 Handle exceptions if any
+        val errorHandler = CoroutineExceptionHandler { _, exception ->
+            AlertDialog.Builder(requireContext()).setTitle("Error")
+                .setMessage(exception.message)
+                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
+        }
+
+
+        val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
+        coroutineScope.launch(errorHandler) {
+            //4
+            val resultList = DataRetriever().getIQData()
+            rv_IQ.adapter = SkillIQAdapter(resultList)
+        }
+    }
+
+    fun isNetworkConnected(): Boolean {
+        val connectivityManager =
+            activity!!.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+        return networkCapabilities != null &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
 
     companion object {
         /**
