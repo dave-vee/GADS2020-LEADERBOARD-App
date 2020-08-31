@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.example.leaderboard.fragments.SkillIQ_leaders
+import com.example.leaderboard.fragments.learning_Leaders
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
 
     var learningLeaders = learning_Leaders
-    var IQ_leaders = com.example.leaderboard.SkillIQ_leaders
+    var IQ_leaders = SkillIQ_leaders
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,10 +1,11 @@
-package com.example.leaderboard
+package com.example.leaderboard.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.leaderboard.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,6 +18,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SkillIQ_leaders : Fragment() {
+
+//    private lateinit var linearLayoutManager: LinearLayoutManager
+//    private lateinit var recyclerView :RecyclerView
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -34,7 +39,7 @@ class SkillIQ_leaders : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_skill_i_q_leaders, container, false)
+        return inflater.inflate(R.layout.item_skilliq, container, false)
     }
 
     companion object {
@@ -56,4 +61,6 @@ class SkillIQ_leaders : Fragment() {
                 }
             }
     }
+
+
 }
