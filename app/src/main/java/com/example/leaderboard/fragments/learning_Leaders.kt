@@ -10,9 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.leaderboard.Adapters.LeaderListAdapter
 import com.example.leaderboard.R
-import com.example.leaderboard.api.DataRetriever
 import kotlinx.android.synthetic.main.fragment_learning__leaders.*
 import kotlinx.coroutines.*
 
@@ -27,6 +25,18 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class learning_Leaders : Fragment() {
+
+    //1 Create a Coroutine scope using a job to be able to cancel when needed
+    val mainActivityJob = Job()
+
+    //2 Handle exceptions if any
+    val errorHandler = CoroutineExceptionHandler { _, exception ->
+        AlertDialog.Builder(requireContext()).setTitle("Error")
+            .setMessage(exception.message)
+            .setPositiveButton(android.R.string.ok) { _, _ -> }
+            .setIcon(android.R.drawable.ic_dialog_alert).show()
+    }
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -53,33 +63,17 @@ class learning_Leaders : Fragment() {
         rv_learning_leaders.layoutManager = LinearLayoutManager(requireContext())
 
         if (isNetworkConnected()) {
-            retrieveData()
+            val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
+            coroutineScope.launch(errorHandler) {
+                //4
+//                val resultList = DataRetriever().getLearningData()
+//                rv_learning_leaders.adapter = LeaderListAdapter(resultList)
+            }
         } else {
             AlertDialog.Builder(requireContext()).setTitle("No Internet Connection")
                 .setMessage("Please check your internet connection and try again")
                 .setPositiveButton(android.R.string.ok) { _, _ -> }
                 .setIcon(android.R.drawable.ic_dialog_alert).show()
-        }
-    }
-
-    private fun retrieveData() {
-        //1 Create a Coroutine scope using a job to be able to cancel when needed
-        val mainActivityJob = Job()
-
-        //2 Handle exceptions if any
-        val errorHandler = CoroutineExceptionHandler { _, exception ->
-            AlertDialog.Builder(requireContext()).setTitle("Error")
-                .setMessage(exception.message)
-                .setPositiveButton(android.R.string.ok) { _, _ -> }
-                .setIcon(android.R.drawable.ic_dialog_alert).show()
-        }
-
-
-        val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
-        coroutineScope.launch(errorHandler) {
-            //4
-            val resultList = DataRetriever().getLearningData()
-            rv_learning_leaders.adapter = LeaderListAdapter(resultList)
         }
     }
 

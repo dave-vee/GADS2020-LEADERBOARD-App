@@ -5,11 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leaderboard.R
+import com.example.leaderboard.data.DataResult2
 import com.example.leaderboard.data.learning_leaders
-import kotlinx.android.synthetic.main.recycler_learningleader.view.*
+import kotlinx.android.synthetic.main.recyclerview_learningleader.view.*
 
 
-class LeaderListAdapter(private val leadersList: learning_leaders) :
+class LeaderListAdapter(private val leadersList: DataResult2) :
     RecyclerView.Adapter<LeaderListAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,7 +31,7 @@ class LeaderListAdapter(private val leadersList: learning_leaders) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindLeaderData(leadersList)
+        holder.bindLeaderData(leadersList.items[position])
     }
 
     override fun getItemCount(): Int = leadersList.items.size

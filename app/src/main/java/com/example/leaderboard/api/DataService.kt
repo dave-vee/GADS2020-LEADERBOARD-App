@@ -1,6 +1,6 @@
 package com.example.leaderboard.api
 
-import com.example.leaderboard.data.Skill_IQ_Leaders
+import com.example.leaderboard.data.SkillIQ
 import com.example.leaderboard.data.learning_leaders
 import retrofit2.http.GET
 
@@ -13,6 +13,6 @@ interface DataService {
 
     //  IQ Data search
     @GET("api/skilliq")
-    suspend fun searchIQData(): Skill_IQ_Leaders
+    suspend fun searchIQData(): SkillIQ
 
 }

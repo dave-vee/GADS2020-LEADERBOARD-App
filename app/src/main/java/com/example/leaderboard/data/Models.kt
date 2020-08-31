@@ -1,45 +1,47 @@
 package com.example.leaderboard.data
 
-import android.content.ClipData
+
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-//data class DataResult(val items: List<ClipData.Item>)
+data class DataResult1(val items: List<SkillIQ>)
+data class DataResult2(val items: List<learning_leaders>)
 
-data class learning_leaders(val items: List<ClipData.Item>) {
+data class learning_leaders(
     @SerializedName("name")
     @Expose
-    var name: String? = null
+    var name: String? = null,
 
     @SerializedName("hours")
     @Expose
-    var hours: Int? = null
+    var hours: Int? = null,
 
     @SerializedName("country")
     @Expose
-    var country: String? = null
+    var country: String? = null,
 
     @SerializedName("badgeUrl")
     @Expose
-    var badgeUrl: String? = null
-}
+    var badgeUrl: String? = null,
+)
 
-data class Skill_IQ_Leaders(val items: List<ClipData.Item>) {
+data class SkillIQ(
 
     @SerializedName("name")
     @Expose
-    val name: String? = null
+    val name: String? = null,
 
     @SerializedName("score")
     @Expose
-    val score: Int? = null
+    val score: Int? = null,
 
     @SerializedName("country")
     @Expose
-    val country: String? = null
+    val country: String? = null,
 
 //    @SerializedName("badgeUrl")
 //    @Expose
 //    private val badgeUrl: String? = null
 
-}
+)
+

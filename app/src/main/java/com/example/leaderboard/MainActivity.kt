@@ -1,6 +1,8 @@
 package com.example.leaderboard
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
+    private lateinit var submit_btn: Button
 
     var learningLeaders = learning_Leaders
     var IQ_leaders = SkillIQ_leaders
@@ -43,6 +46,12 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = viewPagerAdapter
         tabLayout.setupWithViewPager(viewPager)
 
+
+        submit_btn = findViewById(R.id.submit_btn)
+        submit_btn.setOnClickListener {
+            val intent = Intent(this, SubmitActivity::class.java)
+            startActivity(intent)
+        }
 
 
     }

@@ -5,16 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leaderboard.R
-import com.example.leaderboard.data.Skill_IQ_Leaders
+import com.example.leaderboard.data.DataResult1
+import com.example.leaderboard.data.SkillIQ
 import kotlinx.android.synthetic.main.recyclerview_skilliq.view.*
 
 
-class SkillIQAdapter(private val IQList: Skill_IQ_Leaders) :
+class SkillIQAdapter(private val IQList: DataResult1) :
     RecyclerView.Adapter<SkillIQAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindData(data: Skill_IQ_Leaders) {
+        fun bindData(data: SkillIQ) {
             with(data) {
                 itemView.name_IQ.text = name.toString()
                 itemView.score_IQ.text = score.toString()
@@ -30,7 +31,7 @@ class SkillIQAdapter(private val IQList: Skill_IQ_Leaders) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(IQList)
+        holder.bindData(IQList.items[position])
     }
 
     override fun getItemCount(): Int = IQList.items.size

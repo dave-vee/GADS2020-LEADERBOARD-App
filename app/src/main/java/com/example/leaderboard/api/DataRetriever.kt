@@ -2,7 +2,7 @@ package com.example.leaderboard.api
 // Other imported classes
 
 
-import com.example.leaderboard.data.Skill_IQ_Leaders
+import com.example.leaderboard.data.SkillIQ
 import com.example.leaderboard.data.learning_leaders
 import okhttp3.CipherSuite
 import okhttp3.ConnectionSpec
@@ -62,7 +62,7 @@ class DataRetriever {
         return service.searchLearningData()
     }
 
-    suspend fun getIQData(): Skill_IQ_Leaders {
+    suspend fun getIQData(): SkillIQ {
         return service.searchIQData()
     }
 

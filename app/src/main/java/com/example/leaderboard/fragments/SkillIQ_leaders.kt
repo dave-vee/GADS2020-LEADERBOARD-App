@@ -10,9 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.leaderboard.Adapters.SkillIQAdapter
 import com.example.leaderboard.R
-import com.example.leaderboard.api.DataRetriever
 import kotlinx.android.synthetic.main.fragment_skilliq.*
 import kotlinx.coroutines.*
 
@@ -28,7 +26,16 @@ private const val ARG_PARAM2 = "param2"
  */
 class SkillIQ_leaders : Fragment() {
 
+    //1 Create a Coroutine scope using a job to be able to cancel when needed
+    val mainActivityJob = Job()
 
+    //2 Handle exceptions if any
+    val errorHandler = CoroutineExceptionHandler { _, exception ->
+        AlertDialog.Builder(requireContext()).setTitle("Error")
+            .setMessage(exception.message)
+            .setPositiveButton(android.R.string.ok) { _, _ -> }
+            .setIcon(android.R.drawable.ic_dialog_alert).show()
+    }
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -57,7 +64,12 @@ class SkillIQ_leaders : Fragment() {
 
         rv_IQ.layoutManager = LinearLayoutManager(requireContext())
         if (isNetworkConnected()) {
-            retrieveData()
+            val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
+            coroutineScope.launch(errorHandler) {
+                //4
+//                val resultList = DataRetriever().getIQData()
+//                rv_IQ.adapter = SkillIQAdapter(resultList)
+            }
         } else {
             AlertDialog.Builder(requireContext()).setTitle("No Internet Connection")
                 .setMessage("Please check your internet connection and try again")
@@ -65,28 +77,6 @@ class SkillIQ_leaders : Fragment() {
                 .setIcon(android.R.drawable.ic_dialog_alert).show()
         }
 
-    }
-
-
-    fun retrieveData() {
-        //1 Create a Coroutine scope using a job to be able to cancel when needed
-        val mainActivityJob = Job()
-
-        //2 Handle exceptions if any
-        val errorHandler = CoroutineExceptionHandler { _, exception ->
-            AlertDialog.Builder(requireContext()).setTitle("Error")
-                .setMessage(exception.message)
-                .setPositiveButton(android.R.string.ok) { _, _ -> }
-                .setIcon(android.R.drawable.ic_dialog_alert).show()
-        }
-
-
-        val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
-        coroutineScope.launch(errorHandler) {
-            //4
-            val resultList = DataRetriever().getIQData()
-            rv_IQ.adapter = SkillIQAdapter(resultList)
-        }
     }
 
     fun isNetworkConnected(): Boolean {
