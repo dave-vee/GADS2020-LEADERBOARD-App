@@ -1,17 +1,18 @@
 package com.example.leaderboard.Adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leaderboard.R
-import com.example.leaderboard.data.DataResult2
 import com.example.leaderboard.data.learning_leaders
 import kotlinx.android.synthetic.main.recyclerview_learningleader.view.*
 
 
-class LeaderListAdapter(private val leadersList: DataResult2) :
+class LeaderListAdapter(private val leadersList: List<learning_leaders>) :
     RecyclerView.Adapter<LeaderListAdapter.ViewHolder>() {
+
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -26,15 +27,19 @@ class LeaderListAdapter(private val leadersList: DataResult2) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.fragment_skilliq, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.recyclerview_learningleader, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindLeaderData(leadersList.items[position])
+        Log.e("TAG", "onBindViewHolder:$position ")
+        holder.bindLeaderData(leadersList[position])
     }
 
-    override fun getItemCount(): Int = leadersList.items.size
+    override fun getItemCount(): Int {
+        return leadersList.size
+    }
 
 
 }

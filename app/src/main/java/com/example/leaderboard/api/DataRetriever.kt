@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class DataRetriever {
-    private lateinit var service: DataService
+    private var service: DataService
 
     companion object {
         //1
@@ -58,11 +58,11 @@ class DataRetriever {
 
     }
 
-    suspend fun getLearningData(): learning_leaders {
+    suspend fun getLearningData(): List<learning_leaders> {
         return service.searchLearningData()
     }
 
-    suspend fun getIQData(): SkillIQ {
+    suspend fun getIQData(): List<SkillIQ> {
         return service.searchIQData()
     }
 

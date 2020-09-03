@@ -9,8 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.leaderboard.Adapters.SkillIQAdapter
 import com.example.leaderboard.R
+import com.example.leaderboard.api.DataRetriever
+import com.example.leaderboard.data.SkillIQ
 import kotlinx.android.synthetic.main.fragment_skilliq.*
 import kotlinx.coroutines.*
 
@@ -36,6 +40,7 @@ class SkillIQ_leaders : Fragment() {
             .setPositiveButton(android.R.string.ok) { _, _ -> }
             .setIcon(android.R.drawable.ic_dialog_alert).show()
     }
+    val response: MutableLiveData<SkillIQ> = MutableLiveData()
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -67,8 +72,8 @@ class SkillIQ_leaders : Fragment() {
             val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
             coroutineScope.launch(errorHandler) {
                 //4
-//                val resultList = DataRetriever().getIQData()
-//                rv_IQ.adapter = SkillIQAdapter(resultList)
+                val resultList = DataRetriever().getIQData()
+                rv_IQ.adapter = SkillIQAdapter(resultList)
             }
         } else {
             AlertDialog.Builder(requireContext()).setTitle("No Internet Connection")

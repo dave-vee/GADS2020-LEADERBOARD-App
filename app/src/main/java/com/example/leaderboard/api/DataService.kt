@@ -9,10 +9,11 @@ interface DataService {
 
     //Learning Hours search
     @GET("api/hours")
-    suspend fun searchLearningData(): learning_leaders
+    suspend fun searchLearningData(): List<learning_leaders>
 
     //  IQ Data search
     @GET("api/skilliq")
-    suspend fun searchIQData(): SkillIQ
+    suspend fun searchIQData(): List<SkillIQ>
 
 }
+

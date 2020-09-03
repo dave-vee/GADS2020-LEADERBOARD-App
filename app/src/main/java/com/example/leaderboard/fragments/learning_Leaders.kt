@@ -10,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.leaderboard.Adapters.LeaderListAdapter
 import com.example.leaderboard.R
+import com.example.leaderboard.api.DataRetriever
 import kotlinx.android.synthetic.main.fragment_learning__leaders.*
 import kotlinx.coroutines.*
 
@@ -28,6 +30,7 @@ class learning_Leaders : Fragment() {
 
     //1 Create a Coroutine scope using a job to be able to cancel when needed
     val mainActivityJob = Job()
+    lateinit var adapter: LeaderListAdapter
 
     //2 Handle exceptions if any
     val errorHandler = CoroutineExceptionHandler { _, exception ->
@@ -36,6 +39,7 @@ class learning_Leaders : Fragment() {
             .setPositiveButton(android.R.string.ok) { _, _ -> }
             .setIcon(android.R.drawable.ic_dialog_alert).show()
     }
+
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -66,8 +70,10 @@ class learning_Leaders : Fragment() {
             val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
             coroutineScope.launch(errorHandler) {
                 //4
-//                val resultList = DataRetriever().getLearningData()
-//                rv_learning_leaders.adapter = LeaderListAdapter(resultList)
+                val resultList = DataRetriever().getLearningData()
+                adapter = LeaderListAdapter(resultList)
+                rv_learning_leaders.adapter = adapter
+//               adapter.addLeaders(resultList)
             }
         } else {
             AlertDialog.Builder(requireContext()).setTitle("No Internet Connection")
