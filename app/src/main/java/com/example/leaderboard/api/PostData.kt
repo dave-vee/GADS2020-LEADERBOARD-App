@@ -1,11 +1,12 @@
 package com.example.leaderboard.api
 
+import android.widget.EditText
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class PostData {
 
-    private var service: GoogleService
+    private var service: PostService
 
     companion object {
         //1
@@ -21,11 +22,11 @@ class PostData {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         //4
-        service = retrofit.create(GoogleService::class.java)
+        service = retrofit.create(PostService::class.java)
     }
 
-    suspend fun PostData() {
-        return service.Post()
+    suspend fun post(name: EditText, lastName: EditText, email: EditText, link: EditText) {
+        return service.Post(name, lastName, email, link)
     }
 
 }
