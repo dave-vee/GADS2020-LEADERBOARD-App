@@ -1,6 +1,7 @@
 package com.example.leaderboard.api
 
 import android.widget.EditText
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -25,8 +26,13 @@ class PostData {
         service = retrofit.create(PostService::class.java)
     }
 
-    suspend fun post(name: EditText, lastName: EditText, email: EditText, link: EditText) {
-        return service.Post(name, lastName, email, link)
+    suspend fun post(
+        name: EditText,
+        lastName: EditText,
+        email: EditText,
+        link: EditText
+    ): Call<Void> {
+        return service.Post(name.toString(), lastName.toString(), email.toString(), link.toString())
     }
 
 }

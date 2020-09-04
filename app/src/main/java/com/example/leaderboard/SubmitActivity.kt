@@ -39,6 +39,9 @@ class SubmitActivity : AppCompatActivity() {
         val submitBtn = findViewById<Button>(R.id.button)
 
 
+
+
+
         submitBtn.setOnClickListener {
 
             if (isNetworkConnected()) {
@@ -47,7 +50,10 @@ class SubmitActivity : AppCompatActivity() {
                 builder.setPositiveButton(R.string.yes) { _, _ ->
                     val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
                     coroutineScope.launch(errorHandler) {
-
+                        name.text.toString()
+                        lastName.text.toString()
+                        email.text.toString()
+                        link.text.toString()
                         val postData = PostData()
                         postData.post(name, lastName, email, link)
 
