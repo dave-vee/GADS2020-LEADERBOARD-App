@@ -6,10 +6,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.leaderboard.api.PostData
+import kotlinx.android.synthetic.main.activity_submit.*
 import kotlinx.coroutines.*
 
 
@@ -25,7 +25,8 @@ class SubmitActivity : AppCompatActivity() {
             .setIcon(android.R.drawable.ic_dialog_alert).show()
 
     }
-
+    val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
+    val postData = PostData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,26 +37,25 @@ class SubmitActivity : AppCompatActivity() {
         val lastName = findViewById<EditText>(R.id.Second_Name)
         val email = findViewById<EditText>(R.id.email_text)
         val link = findViewById<EditText>(R.id.link_text)
-        val submitBtn = findViewById<Button>(R.id.button)
 
 
 
 
 
-        submitBtn.setOnClickListener {
+
+        button.setOnClickListener {
 
             if (isNetworkConnected()) {
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage("Are You Sure?")
                 builder.setPositiveButton(R.string.yes) { _, _ ->
-                    val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
                     coroutineScope.launch(errorHandler) {
-                        name.text.toString()
-                        lastName.text.toString()
-                        email.text.toString()
-                        link.text.toString()
-                        val postData = PostData()
-                        postData.post(name, lastName, email, link)
+                        postData.post(
+                            name.toString(),
+                            lastName.toString(),
+                            email.toString(),
+                            link.toString()
+                        )
 
                     }
                 }.show()

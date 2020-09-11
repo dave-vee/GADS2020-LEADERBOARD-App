@@ -1,9 +1,17 @@
 package com.example.leaderboard.api
 
-import android.widget.EditText
-import retrofit2.Call
+
+import com.google.gson.GsonBuilder
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.util.concurrent.TimeUnit
+
 
 class PostData {
 
@@ -11,28 +19,57 @@ class PostData {
 
     companion object {
         //1
-        const val BASE_URL = "https://gadsapi.herokuapp.com/"
+        const val BASE_URL = "https://docs.google.com/forms/d/e/"
     }
 
     init {
-        // 2
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
         val retrofit = Retrofit.Builder()
-            // 1
+
             .baseUrl(BASE_URL)
-            //3
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(getClient())
             .build()
         //4
         service = retrofit.create(PostService::class.java)
     }
 
     suspend fun post(
-        name: EditText,
-        lastName: EditText,
-        email: EditText,
-        link: EditText
-    ): Call<Void> {
-        return service.Post(name.toString(), lastName.toString(), email.toString(), link.toString())
+        name: String,
+        lastName: String,
+        email: String,
+        link: String
+    ): String {
+        return service.post(name, lastName, email, link)
     }
+
+
+    fun getClient(): OkHttpClient {
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.apply {
+            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        }
+        val httpClientBuilder = OkHttpClient.Builder()
+        httpClientBuilder.addInterceptor(object : Interceptor {
+            @Throws(IOException::class)
+            override fun intercept(chain: Interceptor.Chain): Response {
+                val requestBuilder: Request.Builder = chain.request().newBuilder()
+                requestBuilder.header("Content-Type", "application/x-www-form-urlencoded")
+                requestBuilder.header("Accept", "*/*")
+                return chain.proceed(requestBuilder.build())
+            }
+        })
+        return httpClientBuilder
+            .addInterceptor(httpLoggingInterceptor)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+
+            .build()
+
+
+    }
+
 
 }
